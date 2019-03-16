@@ -1,0 +1,31 @@
+name: lamaran
+description: A new Flutter project.
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^0.1.2
+  flame: ^0.10.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: Pacifico
+      fonts:
+        - asset: fonts/Pacifico-Regular.ttf
+          weight: 700
+  assets:
+    - assets/images/bg.jpg
+    - assets/images/fg.png
+    - assets/images/magnifying_glass.png
+    - assets/images/treasure.png
+    - assets/images/banner.png
