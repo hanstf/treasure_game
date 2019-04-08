@@ -1,47 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
+import 'package:lamaran/banner_story.dart';
+import 'package:lamaran/bloc/AppBloc.dart';
+import 'package:lamaran/event/App/NextLevelButtonPressed.dart';
+import 'package:lamaran/event/App/TreasureFound.dart';
 import 'package:lamaran/foreground.dart';
 import 'package:lamaran/background.dart';
 import 'package:lamaran/magnifying_glass.dart';
-import 'package:lamaran/screen/main_menu.dart';
+import 'package:lamaran/model/Level.dart';
+import 'package:lamaran/data/states.dart';
+import 'package:lamaran/state/App/AppStarted.dart';
 import 'package:lamaran/treasure.dart';
 
-class Level {
-  int levelNo;
-  double position;
-  Level(this.levelNo, this.position);
-}
-
 class TreasureGame extends BaseGame {
-  static const String PAUSED_STATE = 'PAUSED';
-  static const String PLAYED_STATE = 'STARTED';
+  Level level;
 
-
-  String status = PAUSED_STATE;
-
+  BannerStory bannerStory;
   Background background;
   Foreground foreground;
   MagnifyingGlass magnifyingGlass;
   Treasure treasure;
 
-  bool isRendered = false;
-  List<Level> levels;
-  int currentLevel = 0;
+  AppBloc bloc;
 
-  TreasureGame(this.levels) {
-    background = new Background();
-    foreground = new Foreground();
-    magnifyingGlass = new MagnifyingGlass();
-    treasure = new Treasure(this.levels[this.currentLevel].position);
+  TreasureGame(this.bloc);
 
+  void initiate(Level _level, AppStarted _state) {
+    this.destroyAllComponents();
+
+    foreground = new Foreground(_level.foreGroundColor);
     add(foreground);
-    add(background); //masked
-    add(treasure);
-    add(magnifyingGlass);
 
-    handleInput(new DragUpdateDetails(globalPosition: new Offset(0, 0)), true);
+    if (_state.status == GameState.STARTED) {
+      background = new Background(_level.backgroundImage);
+      add(background);
+      treasure = new Treasure(_level.position, _level.treasureImage);
+      add(treasure);
+      magnifyingGlass = new MagnifyingGlass();
+      add(magnifyingGlass);
+    }
 
-    play();
+    if (_state.isBannerShown) {
+      bannerStory = new BannerStory(_level.winningText);
+      add(bannerStory);
+    }
+
+  }
+
+  void destroyAllComponents() {
+    components.removeWhere((_) => true);
   }
 
   @override
@@ -49,33 +56,43 @@ class TreasureGame extends BaseGame {
     super.render(canvas);
   }
 
-  /// Set game state to pause so that
-  /// All components that implement [Pausable] can minimize itself
-  void pause() {
-    status = PAUSED_STATE;
+  @override
+  void resize(Size size) {
+    super.resize(size);
   }
 
-  /// Set game state to play so that
-  /// All components that implement [Pausable] can maximize itself
-  void play() {
-    status = PLAYED_STATE;
+  @override
+  void update(double t) {
+    super.update(t);
   }
 
-  void handleInput(DragUpdateDetails evt, bool begin) {
-    background.followTouch(evt.globalPosition);
-    magnifyingGlass.followTouch(evt.globalPosition);
-    treasure.followTouch(evt.globalPosition);
-    if (!begin) {
-      magnifyingGlass.isTreasureFound(treasure);
-    }
-  }
-
-  void nextLevel() {
-    if (levels.length - 1 == currentLevel) {
+  void handlePan(DragUpdateDetails evt, bool begin) {
+    if (this.bloc == null) {
       return;
     }
-    play();
-    currentLevel++;
-    treasure.move(this.levels[this.currentLevel].position);
+    if (this.bloc.currentState is AppStarted &&
+        (this.bloc.currentState as AppStarted).status == GameState.STARTED) {
+      background.followTouch(evt.globalPosition);
+      magnifyingGlass.followTouch(evt.globalPosition);
+      treasure.followTouch(evt.globalPosition);
+    }
+  }
+
+  void handleTap(TapDownDetails evt) {
+    if (this.bloc == null) {
+      return;
+    }
+    print(evt);
+    if (this.bloc.currentState is AppStarted) {
+      if ((this.bloc.currentState as AppStarted).isBannerShown == false) {
+        if (treasure.isCaptured(evt.globalPosition) && magnifyingGlass.isTreasureFound(treasure)) {
+          this.bloc.dispatch(TreasureFound());
+        }
+      } else {
+        if (bannerStory.isNextButtonPressed(evt.globalPosition)) {
+          this.bloc.dispatch(NextLevelButtonPressed());
+        }
+      }
+    }
   }
 }

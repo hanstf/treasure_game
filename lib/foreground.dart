@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flame/components/component.dart';
 
 class Foreground extends PositionComponent {
+  Color color = Colors.blue[400];
+
+  Foreground(this.color);
 
   @override
   void resize(Size size) {
@@ -12,7 +15,7 @@ class Foreground extends PositionComponent {
 
   @override
   void render(Canvas c) {
-    c.drawColor(Colors.blue[400], BlendMode.dstATop);
+    c.drawColor(this.color, BlendMode.dstATop);
   }
 
   @override

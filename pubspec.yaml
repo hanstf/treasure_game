@@ -9,8 +9,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_bloc: ^0.7.0
   cupertino_icons: ^0.1.2
   flame: ^0.10.1
+  equatable: ^0.1.0
 
 dev_dependencies:
   flutter_test:
@@ -28,4 +30,7 @@ flutter:
     - assets/images/fg.png
     - assets/images/magnifying_glass.png
     - assets/images/treasure.png
+    - assets/images/polaroid.png
+    - assets/images/flower.png
     - assets/images/banner.png
+    - assets/images/btn_next_level.png
