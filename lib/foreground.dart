@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/components/component.dart';
 
@@ -15,7 +16,7 @@ class Foreground extends PositionComponent {
 
   @override
   void render(Canvas c) {
-    c.drawColor(this.color, BlendMode.dstATop);
+    c.drawColor(this.color, BlendMode.src);
   }
 
   @override

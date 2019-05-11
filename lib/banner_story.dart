@@ -1,4 +1,3 @@
-import 'package:box2d_flame/box2d.dart';
 import 'package:flame/components/component.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,7 @@ import 'package:flame/position.dart' as FlamePosition;
 
 class BannerStory extends SpriteComponent {
   static double bannerSize = 200;
-  static int mod = 7;
+  static int mod = 4;
 
   Ui.ParagraphBuilder paragraph = new Ui.ParagraphBuilder(
       new Ui.ParagraphStyle(textAlign: TextAlign.justify));
@@ -44,7 +43,7 @@ class BannerStory extends SpriteComponent {
         new Offset(
             this.width - bannerSize + 20, this.height - (bannerSize * 1.75)));
 
-    if (this.i < this.text.length && this.timer % 2 == 0) {
+    if (this.i < this.text.length && this.timer % 8 == 0) {
       this.i++;
     }
 

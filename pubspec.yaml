@@ -1,4 +1,4 @@
-name: lamaran
+name: treasure_hunt
 description: A new Flutter project.
 
 version: 1.0.0+1
@@ -12,7 +12,9 @@ dependencies:
   flutter_bloc: ^0.7.0
   cupertino_icons: ^0.1.2
   flame: ^0.10.1
+  sensors: ^0.4.0+1
   equatable: ^0.1.0
+  permission: ^0.1.1
 
 dev_dependencies:
   flutter_test:
@@ -29,8 +31,17 @@ flutter:
     - assets/images/bg.jpg
     - assets/images/fg.png
     - assets/images/magnifying_glass.png
-    - assets/images/treasure.png
+    - assets/images/bus.png
     - assets/images/polaroid.png
     - assets/images/flower.png
     - assets/images/banner.png
     - assets/images/btn_next_level.png
+    - assets/images/bear_head.png
+    - assets/images/bear_body.png
+    - assets/audio/level_1.mp3
+    - assets/audio/level_2.mp3
+    - assets/audio/level_3.mp3
+    - assets/audio/before_game.mp3
+    - assets/audio/during_game.mp3
+    - assets/audio/end_game.mp3
+    - assets/audio/level_end.mp3

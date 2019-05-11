@@ -7,6 +7,7 @@ import 'package:lamaran/event/App/NextLevelButtonPressed.dart';
 import 'package:lamaran/event/App/StartButtonPressed.dart';
 import 'package:lamaran/event/App/StopButtonPressed.dart';
 import 'package:lamaran/event/App/TreasureFound.dart';
+import 'package:lamaran/state/App/AppCompleted.dart';
 import 'package:lamaran/state/App/AppStarted.dart';
 import 'package:lamaran/state/App/AppState.dart';
 import 'package:lamaran/state/App/AppStopped.dart';
@@ -26,7 +27,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       yield AppStarted((currentState as AppStarted).levelNum, GameState.PAUSED, true);
     } else if (event is NextLevelButtonPressed) {
       if ((currentState as AppStarted).isLastLevel()) {
-        yield AppStopped();
+        yield AppCompleted();
       } else {
         yield AppStarted((currentState as AppStarted).getNextLevel(), GameState.STARTED, false);
       }
